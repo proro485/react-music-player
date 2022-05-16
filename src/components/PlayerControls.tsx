@@ -5,6 +5,9 @@ import {
   faPause,
   faAngleLeft,
   faAngleRight,
+  faVolumeXmark,
+  faVolumeHigh,
+  faRepeat,
 } from '@fortawesome/free-solid-svg-icons';
 import SongsData from '../Data';
 
@@ -14,7 +17,8 @@ interface Props {
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   audioRef: React.RefObject<HTMLAudioElement>;
-  autoPlay: boolean;
+  muted: boolean;
+  setMuted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface Song {
@@ -31,7 +35,8 @@ const PlayerControls: React.FC<Props> = ({
   isPlaying,
   setIsPlaying,
   audioRef,
-  autoPlay,
+  muted,
+  setMuted,
 }) => {
   const [duration, setDuration] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -54,7 +59,8 @@ const PlayerControls: React.FC<Props> = ({
         setCurrentTime={setCurrentTime}
         duration={duration}
         setDuration={setDuration}
-        autoPlay={autoPlay}
+        muted={muted}
+        setMuted={setMuted}
       />
     </div>
   );
@@ -116,7 +122,8 @@ interface PlayerButtonsProps {
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
   duration: number;
   setDuration: React.Dispatch<React.SetStateAction<number>>;
-  autoPlay: boolean;
+  muted: boolean;
+  setMuted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PlayerButtons: React.FC<PlayerButtonsProps> = ({
@@ -128,8 +135,10 @@ const PlayerButtons: React.FC<PlayerButtonsProps> = ({
   setCurrentTime,
   duration,
   setDuration,
-  autoPlay,
+  muted,
+  setMuted,
 }) => {
+  const [isLooping, setIsLooping] = useState(false);
   const handlePlay = () => {
     if (isPlaying) {
       setIsPlaying(false);
@@ -140,21 +149,21 @@ const PlayerButtons: React.FC<PlayerButtonsProps> = ({
     }
   };
 
-  const handlePrevious = async () => {
+  const handlePrevious = () => {
     const songs = SongsData();
     const index = songs.findIndex((song) => song.audio === audio);
     setCurrentSong(songs[index < songs.length - 1 ? index + 1 : 0]);
     setIsPlaying(true);
   };
 
-  const handleForward = async () => {
+  const handleForward = () => {
     const songs = SongsData();
     const index = songs.findIndex((song) => song.audio === audio);
     setCurrentSong(songs[index < songs.length - 1 ? index + 1 : 0]);
     setIsPlaying(true);
   };
 
-  const autoPlayHandler = async () => {
+  const autoPlayHandler = () => {
     const songs = SongsData();
     const index = songs.findIndex((song) => song.audio === audio);
     setCurrentSong(songs[index < songs.length - 1 ? index + 1 : 0]);
@@ -177,6 +186,13 @@ const PlayerButtons: React.FC<PlayerButtonsProps> = ({
   return (
     <div className="player-buttons">
       <FontAwesomeIcon
+        className="loop-button"
+        icon={faRepeat}
+        color={isLooping ? '#fff' : '#000'}
+        size="2x"
+        onClick={() => setIsLooping(!isLooping)}
+      />
+      <FontAwesomeIcon
         className="skip-back"
         icon={faAngleLeft}
         size="2x"
@@ -194,12 +210,20 @@ const PlayerButtons: React.FC<PlayerButtonsProps> = ({
         size="2x"
         onClick={handleForward}
       />
+      <FontAwesomeIcon
+        className="volume-button"
+        icon={muted ? faVolumeXmark : faVolumeHigh}
+        size="2x"
+        onClick={() => setMuted(!muted)}
+      />
       <audio
         src={audio}
         ref={audioRef}
         onTimeUpdate={updateTimeHandler}
         onLoadedMetadata={handleAfterLoading}
-        onEnded={autoPlay ? autoPlayHandler : undefined}
+        onEnded={autoPlayHandler}
+        muted={muted}
+        loop={isLooping}
       />
     </div>
   );

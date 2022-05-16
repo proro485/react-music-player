@@ -4,9 +4,6 @@ import SongsData from '../Data';
 interface Props {
   currentSong: Song;
   setCurrentSong: React.Dispatch<React.SetStateAction<Song>>;
-  isPlaying: boolean;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  audioRef: React.RefObject<HTMLAudioElement>;
   isLibraryVisible: boolean;
 }
 
@@ -21,9 +18,6 @@ interface Song {
 const LibrarySidebar: React.FC<Props> = ({
   currentSong,
   setCurrentSong,
-  isPlaying,
-  audioRef,
-  setIsPlaying,
   isLibraryVisible,
 }) => {
   return (

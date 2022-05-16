@@ -17,7 +17,7 @@ interface Song {
 function App() {
   const songs = SongsData();
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [autoPlay, setAutoPlay] = useState(true);
+  const [muted, setMuted] = useState(false);
   const [currentSong, setCurrentSong] = useState<Song>(songs[0]);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLibraryVisible, setIsLibraryVisible] = useState<boolean>(false);
@@ -31,9 +31,6 @@ function App() {
       <LibrarySidebar
         currentSong={currentSong}
         setCurrentSong={setCurrentSong}
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        audioRef={audioRef}
         isLibraryVisible={isLibraryVisible}
       />
       <div
@@ -50,7 +47,8 @@ function App() {
           isPlaying={isPlaying}
           setIsPlaying={setIsPlaying}
           audioRef={audioRef}
-          autoPlay={autoPlay}
+          muted={muted}
+          setMuted={setMuted}
         />
       </div>
     </div>

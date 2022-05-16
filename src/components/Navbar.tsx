@@ -9,7 +9,7 @@ interface Props {
 const Navbar: React.FC<Props> = ({ setIsLibraryVisible }) => {
   return (
     <div className="navbar">
-      <h1>React Music Player</h1>
+      <h1>Music Player</h1>
       <div className="library-button">
         <button onClick={() => setIsLibraryVisible((prevState) => !prevState)}>
           <div>
