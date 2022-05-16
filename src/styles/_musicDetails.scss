@@ -1,0 +1,30 @@
+.music-details {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 20%;
+    border-radius: 1rem;
+    margin: 2rem 0rem;
+    object-fit: contain;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .music-details {
+    img {
+      width: 30%;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .music-details {
+    img {
+      width: 50%;
+    }
+  }
+}
